@@ -1,0 +1,126 @@
+python manage.py shell
+
+(InteractiveConsole)
+>>> from NewsPortal.models import *
+>>> u1 = User.objects.create_user(username='Ivan')
+>>> u1
+<User: Ivan>
+>>> u2 = User.objects.create_user(username='Alex')
+>>> u2
+<User: Alex>
+
+>>> Author.objects.create(user_author=u1)
+<Author: Author object (1)>
+>>> Author.objects.create(user_author=u2)
+<Author: Author object (2)>
+
+>>> Category.objects.create(name='Sport')
+<Category: Category object (1)>
+>>> Category.objects.create(name='Education')
+<Category: Category object (2)>
+>>> Category.objects.create(name='Art')
+<Category: Category object (3)>
+>>> Category.objects.create(name='IT')
+<Category: Category object (4)>
+
+>>> author = Author.objects.get(id=1)
+>>> author
+<Author: Author object (1)>
+>>> author2 = Author.objects.get(id=2)
+>>> author2
+<Author: Author object (2)>
+
+>>> Post.objects.create(author=author,field_choice='NE', title='sometitle', text='sometext')
+<Post: Post object (1)>
+>>> Post.objects.create(author=author,field_choice='AR', title='sometitle1', text='sometext1')
+<Post: Post object (2)>
+>>> Post.objects.create(author=author2,field_choice='AR', title='sometitle2', text='sometext2')
+<Post: Post object (3)>
+
+>>> Post.objects.get(id=1).ManyToManyCategory.add(Category.objects.get(id=1))
+>>> Post.objects.get(id=2).ManyToManyCategory.add(Category.objects.get(id=2))
+>>> Post.objects.get(id=3).ManyToManyCategory.add(Category.objects.get(id=1))
+>>> Post.objects.get(id=1).ManyToManyCategory.add(Category.objects.get(id=3))
+>>> Post.objects.get(id=2).ManyToManyCategory.add(Category.objects.get(id=4))
+>>> Post.objects.get(id=3).ManyToManyCategory.add(Category.objects.get(id=3))
+
+>>> Comment.objects.create(comment_post=Post.objects.get(id=1),user_post=Author.objects.get(id=1).user_author, text='good')
+<Comment: Comment object (1)>
+>>> Comment.objects.create(comment_post=Post.objects.get(id=1),user_post=Author.objects.get(id=2).user_author, text='interesting!')
+<Comment: Comment object (2)>
+>>> Comment.objects.create(comment_post=Post.objects.get(id=2),user_post=Author.objects.get(id=2).user_author, text='it is useful article')
+<Comment: Comment object (3)>
+>>> Comment.objects.create(comment_post=Post.objects.get(id=3),user_post=Author.objects.get(id=1).user_author, text='bad')
+<Comment: Comment object (4)>
+>>> Comment.objects.create(comment_post=Post.objects.get(id=3),user_post=Author.objects.get(id=2).user_author, text='I like!')
+<Comment: Comment object (5)>
+
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=1).rating
+1
+>>> Comment.objects.get(id=1).dislike()
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=1).dislike()
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=1).rating
+3
+>>> Comment.objects.get(id=2).like()
+>>> Comment.objects.get(id=2).dislike()
+>>> Comment.objects.get(id=2).dislike()
+>>> Comment.objects.get(id=2).dislike()
+>>> Comment.objects.get(id=2).like()
+>>> Comment.objects.get(id=2).dislike()
+>>> Comment.objects.get(id=2).rating
+-2
+>>> Comment.objects.get(id=3).dislike()
+>>> Comment.objects.get(id=3).like()
+>>> Comment.objects.get(id=3).like()
+>>> Comment.objects.get(id=3).like()
+>>> Comment.objects.get(id=3).rating
+2
+>>> Comment.objects.get(id=4).like()
+>>> Comment.objects.get(id=4).like()
+>>> Comment.objects.get(id=4).like()
+>>> Comment.objects.get(id=4).like()
+>>> Comment.objects.get(id=4).like()
+>>> Comment.objects.get(id=4).like()
+>>> Comment.objects.get(id=4).rating
+6
+>>> Comment.objects.get(id=5).like()
+>>> Comment.objects.get(id=5).dislike()
+>>> Comment.objects.get(id=5).dislike()
+>>> Comment.objects.get(id=5).dislike()
+>>> Comment.objects.get(id=5).like()
+>>> Comment.objects.get(id=5).rating
+-1
+>>> Post.objects.get(id=1).like()
+>>> Post.objects.get(id=1).rating
+1
+>>> Post.objects.get(id=1).like()
+>>> Post.objects.get(id=1).dislike()
+>>> Post.objects.get(id=1).dislike()
+>>> Post.objects.get(id=1).like()
+>>> Post.objects.get(id=1).like()
+>>> Post.objects.get(id=1).like()
+>>> Post.objects.get(id=2).like()
+>>> Post.objects.get(id=2).dislike()
+>>> Post.objects.get(id=2).dislike()
+>>> Post.objects.get(id=3).dislike()
+>>> Post.objects.get(id=3).dislike()
+>>> Post.objects.get(id=3).dislike()
+>>> Post.objects.get(id=3).like()
+>>> Post.objects.get(id=3).like()
+>>> Post.objects.get(id=3).dislike()
+>>> Post.objects.get(id=3).like()
+>>> Author.objects.get(id=1)
+<Author: Author object (1)>
+>>> a = Author.objects.get(id=1)
+>>> a.update_rating()
+
+
+
+
+
+
